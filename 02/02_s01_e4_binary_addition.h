@@ -1,3 +1,5 @@
+#pragma once
+
 // No size checking for c
 // No value checking for a and b
 // element 0 is the lowest-bit

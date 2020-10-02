@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../util/print.h"
 #include "../util/random.h"
 

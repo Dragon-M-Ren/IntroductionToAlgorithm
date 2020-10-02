@@ -8,12 +8,13 @@
 #include "02_s01_e2_insertion_sort_noninsc.h"
 #include "02_s02_e2_selection_sort.h"
 #include "02_s03_merge_sort.h"
+#include "02_s04_p2_bubble_sort.h"
 
 using namespace std;
 
 // test settings
 int length = 10;
-auto sort_func = merge_sort_interface;
+auto sort_func = bubble_sort;
 
 int main(){
   int *nums = new int[length];

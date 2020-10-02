@@ -1,3 +1,5 @@
+#pragma once
+
 int binary_search(const int *nums, int length, int target){
   int start = 0;
   int end = length - 1;

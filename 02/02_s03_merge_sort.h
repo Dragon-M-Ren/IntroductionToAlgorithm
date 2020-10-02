@@ -1,3 +1,4 @@
+#pragma once
 void merge(int *nums, int start, int mid, int end){
   int len_1 = mid - start + 1;
   int len_2 = end - mid;
