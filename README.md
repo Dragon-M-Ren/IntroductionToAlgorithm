@@ -13,3 +13,4 @@ The problems are numbered the section after the last section to preserve the seq
 ## Progress
 - [x] Chpater 1
 - [x] Chapter 2
+- [x] Chapter 3

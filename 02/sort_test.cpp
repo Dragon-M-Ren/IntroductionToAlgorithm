@@ -21,11 +21,11 @@ int main(){
   random_int_array(nums,length);
   
   cout << "Origianl Array: " << endl;
-  print_int_array(nums, 10);
+  print_int_array(nums, length);
 
-  sort_func(nums, 10);
+  sort_func(nums, length);
   cout << "Sorted Arrray: " << endl;
-  print_int_array(nums, 10);
+  print_int_array(nums, length);
   
   delete [] nums;
   return 0;
