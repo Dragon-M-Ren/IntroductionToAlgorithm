@@ -38,4 +38,18 @@ void print_int_vector(std::vector<int> v, int line_volume = 10){
 
     printf("\n");
 }
+
+void print_char_vector(std::vector<char> v, int line_volume = 10){
+    int len = v.size();
+
+   for(int i = 0; i < len; i++)
+    {
+        if(i != 0 && i%line_volume == 0)
+            printf("\n");
+        
+        printf("%c ",v[i]);
+    }
+
+    printf("\n"); 
+}
 #endif
