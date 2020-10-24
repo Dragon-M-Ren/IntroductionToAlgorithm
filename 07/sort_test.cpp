@@ -10,7 +10,7 @@ using namespace std;
 
 // test settings
 int length = 10;
-auto sort_func = QuickSortNonIncrInterface;
+auto sort_func = QuickSortHoareInterface;
 
 int main(){
   int *nums = new int[length];

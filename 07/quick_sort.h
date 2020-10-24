@@ -110,6 +110,34 @@ int PartitionRandom(int *nums, int start, int end){
   return Partition(nums, start, end);
 }
 
+int PartitionHoare(int *nums, int start, int end){
+  int pivot = nums[end];
+
+  int i = start - 1;
+  int j = end + 1;
+  
+  while(1){
+    do{
+      i++;
+    }while(nums[i] <= pivot);
+
+    do{
+      j--;
+    }while(nums[j] >= pivot);
+    
+    if(i < j){
+      std::swap(nums[i], nums[j]);
+    }
+    else break;
+  }
+
+  std::swap(nums[end], nums[i]);
+
+  return i;
+}
+
+
+
 void QuickSort(int *nums, int start, int end){
   // if start == end, base case, do nothing and return
   if(start < end){
@@ -146,6 +174,15 @@ void QuickSortNonIncr(int *nums, int start, int end){
   }
 }
 
+void QuickSortHoare(int *nums, int start, int end){
+  // if start == end, base case, do nothing and return
+  if(start < end){
+    int mid = PartitionHoare(nums, start, end);
+    QuickSort(nums, start, mid - 1);
+    QuickSort(nums, mid + 1, end);
+  }
+}
+
 void QuickSortInterface(int *nums, int length){
   QuickSort(nums, 0, length - 1);
 }
@@ -160,4 +197,8 @@ void QuickSortRandomInterface(int *nums, int length){
 
 void QuickSortNonIncrInterface(int *nums, int length){
   QuickSortNonIncr(nums, 0, length - 1);
+}
+
+void QuickSortHoareInterface(int *nums, int length){
+  QuickSortHoare(nums, 0, length - 1);
 }
