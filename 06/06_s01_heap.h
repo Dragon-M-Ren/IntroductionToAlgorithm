@@ -18,50 +18,51 @@
 // Note + has higher precedence
 #define RIGHT(x) (x << 1) + 1
 
-// Note: using shouldn't be used in hearder files
-// Since this is only for test and then this usage is okay
+// Separate hey and data for simplicity
+template<class Data>
+struct heap{
+  int *key;
+  Data *data;
+  int size;
+  int capacity;
+  
+  heap(int c){
+    key = new int[c+1];
+    data = new Data[c+1];
+    size = 0;
+    capacity = c;
+  }
+};
 
 struct Empty{
 };
 
-// The Data used by heap
-// The assignment operator should works for Data, or the heap won't work
-template <class Data>
-class Element{
-private:
-  int key_;
-  Data data_;
-public:
-  Element(): key_(0){};
-  Element(int key): key_(key){} // whent the real data doesn't matter
-  Element(int key, Data data): key_(key), data_(data){}
-  int GetKey() const{return key_;}
-  Data GetData() const{return data_;}
-};
-
 // Data is the type of data in Element
 template<class Data>
-void Heapify(Element<Data> *data, int node, int heap_size){
+void Heapify(heap<Data> &h, int node){
+//void Heapify(Element<Data> *data, int node, int heap_size){
   int left = LEFT(node);
   int right = RIGHT(node);
   int max = node;
 
-  if(left <= heap_size && data[left].GetKey() GT data[max].GetKey())
+  if(left <= h.size && h.key[left] GT h.key[max])
     max = left;
 
-  if(right <= heap_size && data[right].GetKey() GT data[max].GetKey())
+  if(right <= h.size && h.key[right] GT h.key[max])
     max = right;
   
   if(max == node)
     return;
   
   // Exchange and call recursively
-  std::swap(data[node], data[max]);
-  Heapify(data, max, heap_size);
+  std::swap(h.data[node], h.data[max]);
+  std::swap(h.key[node], h.key[max]);
+  Heapify(h, max);
 }
 
 template<class Data>
-void HeapifyNonRecur(Element<Data> *data, int node, int heap_size){
+void HeapifyNonRecur(heap<Data> &h, int node){
+//void HeapifyNonRecur(Element<Data> *data, int node, int heap_size){
   int left, right;
   int max = node; // Unavaliable 
   int parent = node;
@@ -71,62 +72,66 @@ void HeapifyNonRecur(Element<Data> *data, int node, int heap_size){
     right = RIGHT(parent);
 
     // check max
-    if(left <= heap_size && data[left].GetKey() GT data[max].GetKey())
+    if(left <= h.size && h.key[left] GT h.key[max])
       max = left;
-    if(right <= heap_size && data[right].GetKey() GT data[max].GetKey())
+    if(right <= h.size && h.key[right] GT h.key[max])
       max = right;
 
     if(max == parent)
       break;
 
-    std::swap(data[max], data[parent]);
+    std::swap(h.data[parent], h.data[max]);
+    std::swap(h.key[parent], h.key[max]);
     parent = max;
   }
 }
 
 template<class Data>
-void BuildHeap(Element<Data> *data, int heap_size){
-  for(int node = heap_size/2; node > 0; node--)
-    Heapify(data, node, heap_size);
+void BuildHeap(heap<Data> &h){
+//void BuildHeap(Element<Data> *data, int heap_size){
+  for(int node = h.size/2; node > 0; node--)
+    Heapify(h, node);
 }
 
 
 template<class Data>
-void BuildHeapNonRecur(Element<Data> *data, int heap_size){
-  for(int node = heap_size/2; node > 0; node--)
-    HeapifyNonRecur(data, node, heap_size);
+void BuildHeapNonRecur(heap<Data> &h){
+//void BuildHeapNonRecur(Element<Data> *data, int heap_size){
+  for(int node = h.size/2; node > 0; node--)
+    HeapifyNonRecur(h, node);
 }
 
 template<class Data>
-bool TestHeap(Element<Data> *data, const int node, const int heap_size){
+bool TestHeap(heap<Data> &h, const int node){
+//bool TestHeap(Element<Data> *data, const int node, const int heap_size){
   int left = LEFT(node);
   int right = RIGHT(node);
 
   bool left_statisfied = true;
   bool right_statisfied = true;
 
-  if(left <= heap_size){
-    if(data[left].GetKey() GT data[node].GetKey()){
+  if(left <= h.size){
+    if(h.key[left] GT h.key[node]){
       std::cout << "Heap test failed at \n";
-      std::cout << "Parent: index " << node << " value " <<  data[node].GetKey() << std::endl;
-      std::cout << "Node left: index " << left << " value " << data[left].GetKey() << std::endl;
+      std::cout << "Parent: index " << node << " value " <<  h.key[node] << std::endl;
+      std::cout << "Node left: index " << left << " value " << h.key[left] << std::endl;
       return false;
      }
     else{
-      if(!TestHeap(data, left, heap_size))
+      if(!TestHeap(h, left))
         return false;
     }    
   }  
     
-  if(right <= heap_size){
-    if(data[right].GetKey() GT data[node].GetKey()){
+  if(right <= h.size){
+    if(h.key[right] GT h.key[node]){
       std::cout << "Heap test failed at \n";
-      std::cout << "Parent: index " << node << " value " <<  data[node].GetKey() << std::endl;
-      std::cout << "Node right: index " << right << " value " << data[right].GetKey() << std::endl;
+      std::cout << "Parent: index " << node << " value " <<  h.key[node] << std::endl;
+      std::cout << "Node right: index " << right << " value " << h.key[right] << std::endl;
       return false;
     }
     else{
-      if(!TestHeap(data, right, heap_size))
+      if(!TestHeap(h, right))
         return false;
     }   
   }
@@ -134,35 +139,42 @@ bool TestHeap(Element<Data> *data, const int node, const int heap_size){
 }
 
 template<class Data>
-bool TestHeapInteface(Element<Data> *data, const int heap_size){
-  return TestHeap(data, 1, heap_size);
+bool TestHeapInteface(heap<Data> &h){
+//bool TestHeapInteface(Element<Data> *data, const int heap_size){
+  return TestHeap<Data>(h, 1);
 }
 
 // Helper function to create Eelement with only key
 
 // Assume length > 0 and the buffer has enough space
 template<class Data>
-void BuildElementVector(int * keys, Data * data, Element<Data> result, const int length){
-  for(int i = 0; i < length; i++){
-    result[i+1] = Element<Data>(keys[i], data[i]);
+void BuildElementVector(heap<Data> &h, int * keys, Data * data, const int length){
+  if(length > h.capacity){
+    std::cout << "Not enough capacity in heap\n";
+    exit(1);
   }
+
+  for(int i = 0; i < length; i++){
+    h.key[i+1] = keys[i];
+    h.data[i+1] = data[i];
+  }
+  h.size = length;
 }
 
 template<class Data>
-void BuildElementVector(int *keys, Element<Empty> *result, const int length){
-
-  for(int i = 0; i < length; i++){
-    result[i+1] = Element<Empty>(keys[i]);
+void BuildElementVector(heap<Empty> &h, int *keys, const int length){
+  if(length > h.capacity){
+    std::cout << "Not enough capacity in heap\n";
+    exit(1);
   }
-  //std::cout << "Input key size: " << keys.size() << std::endl;
-  //std::cout << "Input vector size: " << ret.size() << std:: endl;
+
+  for(int i = 0; i < length; i++)
+    h.key[i+1] = keys[i];
+   
+  h.size = length;
 }
 
 template<class Data>
-void PrintHeapKeys(Element<Data> *data, const int length){
-  for(int i = 1; i < length + 1; i++){
-    std::cout << data[i].GetKey() << " ";
-  }
-
-  std::cout << std::endl;
+void PrintHeapKeys(heap<Data> &h){
+  print_int_array(h.key+1, h.size);
 }

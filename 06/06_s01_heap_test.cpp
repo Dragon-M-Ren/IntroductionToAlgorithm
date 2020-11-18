@@ -17,15 +17,15 @@ const int inter = 10;
 
 int main(){
   int *nums = new int[length];
-  Element<Empty> *input_data = new Element<Empty>[length + 1];
+  heap<Empty> input_data(length);
   
   for(int i = 0; i < inter; i++){
     random_int_array(nums,length);
-    BuildElementVector<Empty>(nums, input_data, length);
+    BuildElementVector<Empty>(input_data, nums, length);
 
-    build_heap(input_data, length);
+    build_heap(input_data);
     
-    if(TestHeapInteface(input_data, length)){
+    if(TestHeapInteface(input_data)){
       cout << i << " passed.\n";
        continue;
     }
@@ -34,24 +34,23 @@ int main(){
     cout << "Origianl Array: " << endl;
     print_int_array(nums, length); 
     cout << "Heap content: " << endl;
-    PrintHeapKeys(input_data, length);
+    PrintHeapKeys(input_data);
 
     return 1;
   }
   
   delete [] nums;
-  delete [] input_data;
   
   nums = new int[big_length];
-  input_data = new Element<Empty>[big_length + 1];
+  input_data = heap<Empty>(big_length + 1);
 
   for(int i = 0; i < inter; i++){
     random_int_array(nums, big_length);
-    BuildElementVector<Empty>(nums, input_data, big_length);
+    BuildElementVector<Empty>(input_data, nums, length);
 
-    build_heap(input_data, big_length);
+    build_heap(input_data);
     
-    if(TestHeapInteface(input_data, big_length)){
+    if(TestHeapInteface(input_data)){
       cout << i << " big passed.\n";
       continue;
     }
@@ -60,11 +59,10 @@ int main(){
     cout << "Origianl Array: " << endl;
     print_int_array(nums, big_length); 
     cout << "Heap content: " << endl;
-    PrintHeapKeys(input_data, big_length);
+    PrintHeapKeys(input_data);
     return 1;
   }
     
   delete [] nums;
-  delete [] input_data;
   return 0;
 }
