@@ -17,19 +17,19 @@ const int inter = 10;
 
 int main(){
   int *nums = new int[length];
-  Element<Empty> *input_data = new Element<Empty>[length + 1];
+  heap<Empty> input_data(length);
   
   random_int_array(nums,length);
-  BuildElementVector<Empty>(nums, input_data, length);
+  BuildElementVector<Empty>(input_data, nums, length);
 
-  HeapSort(input_data, length);
+  HeapSort(input_data);
     
   cout << "Origianl Array: " << endl;
   print_int_array(nums, length); 
   cout << "Sorted content: " << endl;
-  PrintHeapKeys(input_data, length);
+  input_data.size = input_data.capacity;
+  PrintHeapKeys(input_data);
   
   delete [] nums;
-  delete [] input_data;
   return 0;
 }

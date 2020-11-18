@@ -1,13 +1,13 @@
 #include "06_s01_heap.h"
 
 template<class Data>
-void HeapSort(Element<Data> *data, int length){
-  BuildHeap(data, length);
+void HeapSort(heap<Data> &h){
+  BuildHeap(h);
 
-  int end = length;
-  
-  for(int end = length; end > 1; end--){
-    std::swap(data[1], data[end]);
-    Heapify(data, 1, end - 1);
+  for(int end = h.size; end > 1; end--){
+    std::swap(h.key[1], h.key[end]);
+    std::swap(h.data[1], h.data[end]);
+    h.size--;
+    Heapify(h, 1);
   }
 }
