@@ -13,10 +13,10 @@
 #define GT <
 #endif 
 
-#define PARENT(x) x >> 1
-#define LEFT(x) x << 1
+#define PARENT(x) (x >> 1)
+#define LEFT(x) (x << 1)
 // Note + has higher precedence
-#define RIGHT(x) (x << 1) + 1
+#define RIGHT(x) ((x << 1) + 1)
 
 // Separate hey and data for simplicity
 template<class Data>
@@ -101,6 +101,39 @@ void BuildHeapNonRecur(heap<Data> &h){
     HeapifyNonRecur(h, node);
 }
 
+
+template<class Data>
+bool HeapInsert(heap<Data> &h, int key, Data data){
+  // The heap is full
+  if(h.size == h.capacity) return false;
+
+  h.size++;
+  int cur = h.size;
+  int parent = PARENT(cur);
+  while(parent > 0 && (key GT h.key[parent])){
+    h.key[cur] = h.key[parent];
+    h.data[cur] = h.data[parent];
+    cur = parent;
+    parent = PARENT(cur);
+  }
+  h.key[cur] = key;
+  h.data[cur] = data;
+
+  return true; 
+}
+
+template<class Data>
+void BuildHeapInsert(heap<Data> &h){
+  int size = h.size;
+  h.size = 0;
+
+  for(int i = 1; i <= size; i++){
+    int key = h.key[i];
+    Data data = h.data[i];
+    HeapInsert(h, key, data);
+  }
+
+}
 template<class Data>
 bool TestHeap(heap<Data> &h, const int node){
 //bool TestHeap(Element<Data> *data, const int node, const int heap_size){

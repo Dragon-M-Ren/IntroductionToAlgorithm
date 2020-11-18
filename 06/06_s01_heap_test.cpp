@@ -6,7 +6,7 @@
 #include "../util/print.h"
 #include "../util/random.h"
 
-#define build_heap BuildHeapNonRecur
+#define build_heap BuildHeapInsert
 
 using namespace std;
 
@@ -46,7 +46,7 @@ int main(){
 
   for(int i = 0; i < inter; i++){
     random_int_array(nums, big_length);
-    BuildElementVector<Empty>(input_data, nums, length);
+    BuildElementVector<Empty>(input_data, nums, big_length);
 
     build_heap(input_data);
     
