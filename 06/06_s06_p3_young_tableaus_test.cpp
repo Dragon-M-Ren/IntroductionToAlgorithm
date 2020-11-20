@@ -18,14 +18,17 @@ const int test_extract_min_iter = 10;
 void test_build();
 void test_extract_min();
 void test_sort();
+void test_find();
 
 int main(){
   //cout << "Test build with insert.\n";  
   //test_build();
   //cout << "Test extract min\n";
   //test_extract_min();
-  cout << "Test sort" << endl;
-  test_sort();
+  //cout << "Test sort" << endl;
+  //test_sort();
+  cout << "Test find\n";
+  test_find();
   return 0;
 }
 
@@ -109,4 +112,23 @@ void test_sort(){
     cout << "Test passed\n";
   }
   
+}
+
+void test_find(){
+  int total_elements = row * col;
+  int *data = new int[total_elements];
+
+  random_int_array_positive(data, total_elements);
+  young_tableaus yt(row, col);
+  build_yt_by_insert(yt, data, total_elements);
+
+  print_young_tableaus(yt);
+
+  int target;
+  while(cin >> target){
+    pair<int, int> res = find(yt, target);
+    if(res.first == -1) cout << "Not found\n";
+    else
+      cout << "Find: " << res.first << " " << res.second << endl;
+  }
 }

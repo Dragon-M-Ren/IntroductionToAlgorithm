@@ -146,6 +146,29 @@ int extract_min(young_tableaus &yt){
 }
 
 std::pair<int, int> find(young_tableaus &yt, int target){
+  int cur_row = 0, cur_col = 0;
+
+  int row = yt.row;
+  int col = yt.col;
+  int **table = yt.table; 
+  
+  // track along the fist row
+  // move right right until the current element is not smaller than the element
+  // or it encounters the end
+  while(cur_col < col-1 && table[0][cur_col] < target) cur_col++;
+  
+  // Don't move out-of-bound
+  while(cur_row < row && cur_col >= 0){
+    // Find the target, return
+    if(table[cur_row][cur_col] == target)
+      return std::pair<int, int>(cur_row, cur_col);
+    
+    // The element is larger than target, move left
+    if(table[cur_row][cur_col] > target) cur_col--;
+    // The element is smaller than target, move down
+    else cur_row++;
+  }
+
   return std::pair<int, int>(-1, -1);
 }
 
