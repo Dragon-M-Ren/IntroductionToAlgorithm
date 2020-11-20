@@ -16,3 +16,4 @@ The problems are numbered the section after the last section to preserve the seq
 - [x] Chapter 3
 - [x] Chapter 4
 - [x] Chpater 5 (No code)
+- [x] Chapter 6
