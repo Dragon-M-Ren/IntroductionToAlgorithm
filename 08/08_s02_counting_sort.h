@@ -1,6 +1,7 @@
 #pragma once
 
-#include <functional>>
+#include <functional>
+#include <iostream>
 
 void CountingSort(int *nums, int *res, int length, int lower_bound, int upper_bound){
   int size = upper_bound - lower_bound + 1;
@@ -32,10 +33,11 @@ void CountingSort(int *nums, int *res, int length, int lower_bound, int upper_bo
 
 
 void CountingSortKeyed(int *nums, int *res, int length, int lower_bound, int upper_bound,
-                  std::function<int(int)GetKey> get_key){
+                  std::function<int(int)> get_key){
   int size = upper_bound - lower_bound + 1;
   int *counter = new int[size];
-
+ 
+  // end
   // Initialize  
   for(int i = 0; i < size; i++){
     counter[i] = 0;
